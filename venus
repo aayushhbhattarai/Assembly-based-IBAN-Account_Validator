@@ -1,0 +1,2 @@
+#!/bin/sh
+java -jar venus-61c.dev.jar -cc --retToAllA $@

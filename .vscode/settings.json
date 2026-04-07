@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.s": "riscv"
+    },
+    "editor.formatOnSave": true
+}

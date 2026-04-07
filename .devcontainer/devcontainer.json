@@ -1,0 +1,39 @@
+{
+    "image": "neuralcoder/prog2-base:p6",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "VisualStudioExptTeam.vscodeintellicode",
+                "wayou.vscode-todo-highlight",
+                "usernamehw.errorlens",
+                "ms-vscode-remote.remote-ssh",
+                "SanaAjani.taskrunnercode",
+                "vinirossa.vscode-gitandgithub-pack",
+                "eamodio.gitlens",
+                "hm.riscv-venus",
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
+                "jbenden.c-cpp-flylint",
+                "vscjava.vscode-java-pack",
+                "cracrayol.pmd-java",
+                "shengchen.vscode-checkstyle",
+                "vscodevim.vim",
+                "zhwu95.riscv",
+                "penguinsnail.riscv-formatter"
+            ]
+        }
+    },
+    "mounts": [
+        "type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/prog2/host-ssh,readonly"
+    ],
+    "forwardPorts": [
+        8082
+    ],
+    "portsAttributes": {
+        "8082": {
+            "label": "GUI App",
+            "onAutoForward": "openBrowser"
+        }
+    },
+    "postCreateCommand": "mkdir -p /home/prog2/.ssh; chown -R prog2:prog2 /home/prog2/.ssh; chmod 700 /home/prog2/.ssh; cp -r /home/prog2/host-ssh/* /home/prog2/.ssh; chmod 600 /home/prog2/.ssh/*; touch /home/prog2/.zshrc"
+}
