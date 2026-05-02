@@ -40,7 +40,7 @@ convert:
 	blt    t0 t1 convert #loop back until done and go to finish
 
 finish:
-	mv     a0 s0         #moving at last to a0
+	mv     a0 s0         #moving at last to a0 and clearing stack
 
 	lw     ra 0(sp)
 	lw     s2 4(sp)
