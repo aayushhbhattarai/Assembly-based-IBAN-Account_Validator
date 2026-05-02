@@ -15,20 +15,20 @@ validate_checksum:
 	sw     s1 8(sp)
 	sw     ra 4(sp)
 
-
+	mv     s0 a0
 	la     s1 temp_iban
 
 	li     t0 0
 	li     t1 18
 
-	mv     s0 a0
-	addi   s0 a0 4
+
+	addi   t3 s0 4
 
 blzknrcopy:
-	lb     t2 0(s0)
+	lbu    t2 0(s0)
 	sb     t2 0(s1)
 
-	addi   s0 s0 1
+	addi   t3 t3 1
 	addi   s1 s1 1
 
 	addi   t0 t0 1
@@ -43,7 +43,6 @@ blzknrcopy:
 	li     t2 52
 	sb     t2 3(s1)
 
-	lw     s0 12(sp)
 	lbu    t2 2(s0)
 	sb     t2 4(s1)
 	lbu    t2 3(s0)
@@ -52,7 +51,7 @@ blzknrcopy:
 	la     a0 temp_iban
 	li     a1 24
 	li     a2 97
-	jal    modulo_str
+	jal    ra, modulo_str
 
 
 	lw     ra, 4(sp)
