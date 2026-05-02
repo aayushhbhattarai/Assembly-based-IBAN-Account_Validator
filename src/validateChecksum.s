@@ -1,5 +1,7 @@
 	.data
-	.globl  validate_checksum
+temp_iban:
+	.space 25
+	.globl validate_checksum
 	.text
 
 # -- validate_checksum --
@@ -8,5 +10,54 @@
 # Return:
 # a0 : the checksum of the IBAN
 validate_checksum:
-# TODO
-	jr      ra
+	addi   sp sp -16
+	sw     s0 12(sp)
+	sw     s1 8(sp)
+	sw     ra 4(sp)
+
+
+	la     s1 temp_iban
+
+	li     t0 0
+	li     t1 18
+
+	mv     s0 a0
+	addi   s0 a0 4
+
+blzknrcopy:
+	lb     t2 0(s0)
+	sb     t2 0(s1)
+
+	addi   s0 s0 1
+	addi   s1 s1 1
+
+	addi   t0 t0 1
+	blt    t0 t1 blzknrcopy
+
+	li     t2 49
+	sb     t2 0(s1)
+	li     t2 51
+	sb     t2 1(s1)
+	li     t2 49
+	sb     t2 2(s1)
+	li     t2 52
+	sb     t2 3(s1)
+
+	lw     s0 12(sp)
+	lbu    t2 2(s0)
+	sb     t2 4(s1)
+	lbu    t2 3(s0)
+	sb     t2 5(s1)
+
+	la     a0 temp_iban
+	li     a1 24
+	li     a2 97
+	jal    modulo_str
+
+
+	lw     ra, 4(sp)
+	lw     s1, 8(sp)
+	lw     s0, 12(sp)
+	addi   sp, sp, 16
+
+	jr     ra
