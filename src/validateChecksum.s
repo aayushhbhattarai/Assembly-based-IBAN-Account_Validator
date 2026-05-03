@@ -1,6 +1,6 @@
 	.data
 temp_iban:
-	.space 25
+	.space 32
 	.globl validate_checksum
 	.text
 
@@ -18,11 +18,11 @@ validate_checksum:
 	mv     s0 a0
 	la     s1 temp_iban
 
+
+	addi   s0 s0 4
 	li     t0 0
 	li     t1 18
 
-
-	addi   t3 s0 4
 
 blzknrcopy:
 	lbu    t2 0(s0)

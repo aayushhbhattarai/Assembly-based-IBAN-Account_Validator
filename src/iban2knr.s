@@ -19,7 +19,7 @@ iban2knr:
 	li     t0 0
 	li     t1 8
 
-loop:
+blzloop:
 	lb     t2 0(s0)
 	sb     t2 0(s1)
 
