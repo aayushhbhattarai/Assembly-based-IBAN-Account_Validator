@@ -27,7 +27,7 @@ blzloop:
 	addi   s1 s1 1
 
 	addi   t0 t0 1
-	blt    t0 t1 loop
+	blt    t0 t1 blzloop
 
 	mv     s2 a2
 	li     t0 0

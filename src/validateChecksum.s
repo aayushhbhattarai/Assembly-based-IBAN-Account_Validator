@@ -1,6 +1,4 @@
 	.data
-temp_iban:
-	.space 32
 	.globl validate_checksum
 	.text
 
@@ -16,8 +14,6 @@ validate_checksum:
 	sw     ra 4(sp)
 
 	mv     s0 a0
-	la     s1 temp_iban
-
 
 	addi   s0 s0 4
 	li     t0 0
@@ -28,25 +24,25 @@ blzknrcopy:
 	lbu    t2 0(s0)
 	sb     t2 0(s1)
 
-	addi   t3 t3 1
+	addi   s0 s0 1
 	addi   s1 s1 1
 
 	addi   t0 t0 1
 	blt    t0 t1 blzknrcopy
 
 	li     t2 49
-	sb     t2 0(s1)
+	sb     t2 19(s1)
 	li     t2 51
-	sb     t2 1(s1)
+	sb     t2 20(s1)
 	li     t2 49
-	sb     t2 2(s1)
+	sb     t2 21(s1)
 	li     t2 52
-	sb     t2 3(s1)
+	sb     t2 22(s1)
 
-	lbu    t2 2(s0)
-	sb     t2 4(s1)
-	lbu    t2 3(s0)
-	sb     t2 5(s1)
+	lbu    t2 -2(s0)
+	sb     t2 23(s1)
+	lbu    t2 -3(s0)
+	sb     t2 24(s1)
 
 	la     a0 temp_iban
 	li     a1 24
