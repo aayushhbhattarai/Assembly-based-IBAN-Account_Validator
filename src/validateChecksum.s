@@ -1,58 +1,72 @@
-	.data
+.data
+temp_iban:
+	.space 30           # 24 bytes needed; a little extra for safety
+
 	.globl validate_checksum
 	.text
 
-# -- validate_checksum --
-# Arguments:
-# a0 : Address of a string containing a german IBAN (22 characters)
-# Return:
-# a0 : the checksum of the IBAN
+
 validate_checksum:
-	addi   sp sp -16
-	sw     s0 12(sp)
-	sw     s1 8(sp)
-	sw     ra 4(sp)
+	addi    sp sp -20
+	sw      s0 16(sp)
+	sw      s1 12(sp)
+	sw      s2 8(sp)
+	sw      s3 4(sp)
+	sw      ra 0(sp)
 
-	mv     s0 a0
-
-	addi   s0 s0 4
-	li     t0 0
-	li     t1 18
-
-
-blzknrcopy:
-	lbu    t2 0(s0)
-	sb     t2 0(s1)
-
-	addi   s0 s0 1
-	addi   s1 s1 1
-
-	addi   t0 t0 1
-	blt    t0 t1 blzknrcopy
-
-	li     t2 49
-	sb     t2 19(s1)
-	li     t2 51
-	sb     t2 20(s1)
-	li     t2 49
-	sb     t2 21(s1)
-	li     t2 52
-	sb     t2 22(s1)
-
-	lbu    t2 -2(s0)
-	sb     t2 23(s1)
-	lbu    t2 -3(s0)
-	sb     t2 24(s1)
-
-	la     a0 temp_iban
-	li     a1 24
-	li     a2 97
-	jal    ra, modulo_str
+	mv      s0 a0              
+	la      s1 temp_iban       
 
 
-	lw     ra, 4(sp)
-	lw     s1, 8(sp)
-	lw     s0, 12(sp)
-	addi   sp, sp, 16
+	addi    s2 s0 4             # s2 = &IBAN[4]
+	li      t0 0
+	li      t1 18
+vc_copy_blzknr:
+	lbu     t2 0(s2)
+	sb      t2 0(s1)
+	addi    s2 s2 1
+	addi    s1 s1 1
+	addi    t0 t0 1
+	blt     t0 t1 vc_copy_blzknr
 
-	jr     ra
+	li      s3 55
+	li      t3 10
+
+	lbu     t0 0(s0)
+	sub     t0 t0 s3
+	div     t1 t0 t3
+	rem     t2 t0 t3
+	addi    t1 t1 '0'
+	addi    t2 t2 '0'
+	sb      t1 0(s1)
+	sb      t2 1(s1)
+	addi    s1 s1 2
+
+	lbu     t0 1(s0)
+	sub     t0 t0 s3
+	div     t1 t0 t3
+	rem     t2 t0 t3
+	addi    t1 t1 '0'
+	addi    t2 t2 '0'
+	sb      t1 0(s1)
+	sb      t2 1(s1)
+	addi    s1 s1 2
+
+	lbu     t0 2(s0)
+	sb      t0 0(s1)
+	lbu     t0 3(s0)
+	sb      t0 1(s1)
+
+	la      a0 temp_iban
+	li      a1 24
+	li      a2 97
+	jal     ra modulo_str     
+
+	lw      ra 0(sp)
+	lw      s3 4(sp)
+	lw      s2 8(sp)
+	lw      s1 12(sp)
+	lw      s0 16(sp)
+	addi    sp sp 20
+
+	jr      ra
